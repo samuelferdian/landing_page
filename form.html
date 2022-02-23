@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+        setInterval(function() {
+            $.ajax({
+                type: "get",
+                url: "http://localhost:8000/check/?msisdn="+$("#msisdn").val(),
+                success:function(data)
+                {
+                    $("#statusValue").html(data);
+                    if (data == "FAILED") {
+                        $("#statusValue").css("color", "red");
+                    } else if (data == "SUCCESS") {
+                        $("#statusValue").css("color", "green");
+                    }
+                    
+                }
+            });
+        }, 10000); //10000 milliseconds = 10 seconds
+    });
+  </script>
+  <style>
+  form_main {
+      width: 100%;
+  }
+  .form_main h4 {
+      font-family: roboto;
+      font-size: 20px;
+      font-weight: 300;
+      margin-bottom: 15px;
+      margin-top: 20px;
+      text-transform: uppercase;
+  }
+  .heading {
+      border-bottom: 1px solid #fcab0e;
+      padding-bottom: 9px;
+      position: relative;
+  }
+  .heading span {
+      background: #9e6600 none repeat scroll 0 0;
+      bottom: -2px;
+      height: 3px;
+      left: 0;
+      position: absolute;
+      width: 75px;
+  }   
+  .form {
+      border-radius: 7px;
+      padding: 6px;
+  }
+  .txt[type="text"] {
+      border: 1px solid #ccc;
+      margin: 10px 0;
+      padding: 10px 0 10px 5px;
+      width: 100%;
+  }
+  .txt_3[type="text"] {
+      margin: 10px 0 0;
+      padding: 10px 0 10px 5px;
+      width: 100%;
+  }
+  .txt2[type="submit"] {
+      background: #242424 none repeat scroll 0 0;
+      border: 1px solid #4f5c04;
+      border-radius: 25px;
+      color: #fff;
+      font-size: 16px;
+      font-style: normal;
+      line-height: 35px;
+      margin: 10px 0;
+      padding: 0;
+      text-transform: uppercase;
+      width: 30%;
+  }
+  .txt2:hover {
+      background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+      color: #5793ef;
+      transition: all 0.5s ease 0s;
+  }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form_main">
+        <h4 class="heading"><strong>Landing </strong> Page <span></span></h4>
+        <div class="form">
+          <form action="/" method="post" id="myForm">
+              <input type="text" id="msisdn" required="" placeholder="Please input Msisdn" value="{{.Msisdn}}" name="msisdn" class="txt">
+              <input type="text" id="price" required="" placeholder="Please input Price" value="{{.Price}}" name="price" class="txt">
+              <input type="text" id="product" required="" placeholder="Please input Product" value="{{.Product}}" name="product" class="txt">
+              
+              <input type="submit" value="submit" name="submit" class="txt2">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{if .ShowResult}}
+<hr>
+<div class="container" id="status">
+    <div class="row">
+        <div class="jumbotron">
+            <h1 id="statusValue">{{.Status}}</h1>
+        </div>
+    </div>
+</div>
+{{end}}
+</body>
+</html>
